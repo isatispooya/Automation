@@ -56,7 +56,7 @@ export default function SignUp() {
 
   const fetchCaptcha = async () => {
     setIsLoadingCaptcha(true);
-    // Simulate an API call
+
     setTimeout(() => {
       setCaptchaData({ image: "iVBORw0KGgoAAAANSUhEUgAAAA..." });
       setIsLoadingCaptcha(false);
@@ -125,7 +125,6 @@ export default function SignUp() {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <TextField
-                      required
                       fullWidth
                       id="nationalCode"
                       label="کد ملی"
@@ -139,7 +138,6 @@ export default function SignUp() {
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
-                      required
                       fullWidth
                       id="captcha"
                       label="کد کپچا"
