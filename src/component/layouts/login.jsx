@@ -1,122 +1,237 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { Skeleton, Stack } from "@mui/material";
+import LoginPic from "../../../public/img/login.jpg";
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#1976d2",
+    },
+    secondary: {
+      main: "#f50057",
+    },
+    background: {
+      paper: "#ffffff",
+    },
+    text: {
+      primary: "#333333",
+      secondary: "#666666",
+    },
+  },
+  typography: {
+    fontFamily: "Roboto, Arial, sans-serif",
+    h5: {
+      fontWeight: 700,
+      fontSize: "1.5rem",
+    },
+    body2: {
+      fontSize: "0.875rem",
+    },
+  },
+});
 
+export default function SignUp() {
+  const [isLoadingCaptcha, setIsLoadingCaptcha] = useState(true);
+  const [captchaData, setCaptchaData] = useState(null);
+  const [nationalCode, setNationalCode] = useState("");
+  const [captchaLogin, setCaptchaLogin] = useState("");
 
-
-const defaultTheme = createTheme();
-
-export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("fetch data here");
+    const data = new FormData(event.currentTarget);
+    console.log({
+      nationalCode: data.get("nationalCode"),
+      captcha: data.get("captcha"),
+    });
   };
 
+  const fetchCaptcha = async () => {
+    setIsLoadingCaptcha(true);
+    // Simulate an API call
+    setTimeout(() => {
+      setCaptchaData({ image: "iVBORw0KGgoAAAANSUhEUgAAAA..." });
+      setIsLoadingCaptcha(false);
+    }, 2000);
+  };
+
+  useEffect(() => {
+    fetchCaptcha();
+  }, []);
+
   return (
-    
-      <ThemeProvider theme={defaultTheme}>
-        <div dir="rtl" className=""> 
-          <Container component="main" maxWidth="xs">
-            <CssBaseline />
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="lg">
+        <CssBaseline />
+        <Grid
+          container
+          component={Box}
+          sx={{ height: "100vh", alignItems: "center" }}
+        >
+          <Grid item xs={12} md={6}>
             <Box
               sx={{
                 marginTop: 8,
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
+                padding: 4,
+                borderRadius: 2,
+                boxShadow: 3,
+                backgroundColor: theme.palette.background.paper,
+                margin: "40px",
               }}
             >
-              <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
-              <Typography component="h1" variant="h5">
-                 ورود
+              <Avatar
+                sx={{
+                  m: 1,
+                  bgcolor: theme.palette.primary.main,
+                  width: 66,
+                  height: 66,
+                }}
+              ></Avatar>
+              <Typography
+                component="h1"
+                variant="h5"
+                gutterBottom
+                color={theme.palette.text.primary}
+                textAlign="center"
+                sx={{ fontWeight: 700 }}
+              >
+                ورود به حساب کاربری
+              </Typography>
+              <Typography
+                variant="body2"
+                color="textSecondary"
+                align="center"
+                sx={{ mb: 3 }}
+              >
+                لطفاً اطلاعات خود را وارد کنید تا وارد حساب کاربری خود شوید
               </Typography>
               <Box
                 component="form"
                 noValidate
                 onSubmit={handleSubmit}
-                sx={{ mt: 3 }}
+                sx={{ mt: 1 }}
               >
                 <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <TextField
-                      autoComplete="given-name"
-                      name="نام"
-                      required
-                      fullWidth
-                      id="firstName"
-                      label="نام"
-                      autoFocus
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
+                  <Grid item xs={12}>
                     <TextField
                       required
                       fullWidth
-                      id="lastName"
-                      label="نام خانوادگی"
-                      name="نام خانوادگی"
-                      autoComplete="family-name"
+                      id="nationalCode"
+                      label="کد ملی"
+                      name="nationalCode"
+                      autoComplete="nationalCode"
+                      variant="outlined"
+                      size="large"
+                      sx={{ borderRadius: 1 }}
+                      onChange={(e) => setNationalCode(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
                       required
                       fullWidth
-                      id="email"
-                      label="شماره تماس"
-                      name="phone"
-                      autoComplete="phone"
+                      id="captcha"
+                      label="کد کپچا"
+                      name="captcha"
+                      autoComplete="captcha"
+                      variant="outlined"
+                      size="large"
+                      sx={{ borderRadius: 1 }}
+                      onChange={(e) => setCaptchaLogin(e.target.value)}
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <TextField
-                      required
-                      fullWidth
-                      name="رمز"
-                      label="رمز"
-                      type="password"
-                      id="password"
-                      autoComplete="new-password"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    {/* <FormControlLabel
-                      control={
-                        <Checkbox value="allowExtraEmails" color="primary" />
-                      }
-                      label="I    , marketing promotions and updates via email."
-                    /> */}
+                    {isLoadingCaptcha ? (
+                      <Stack
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                        spacing={1}
+                        sx={{ my: 2 }}
+                      >
+                        <Skeleton variant="rounded" width={280} height={60} />
+                      </Stack>
+                    ) : (
+                      <Stack
+                        direction="row"
+                        justifyContent="center"
+                        alignItems="center"
+                        spacing={1}
+                        sx={{ my: 2 }}
+                      >
+                        <Button onClick={fetchCaptcha} sx={{ p: 0 }}>
+                          <img
+                            src={`data:image/png;base64,${captchaData?.image}`}
+                            alt="captcha"
+                            style={{
+                              width: "100%",
+                              height: "auto",
+                              borderRadius: "4px",
+                              border: "1px solid #ddd",
+                              objectFit: "contain",
+                            }}
+                          />
+                        </Button>
+                      </Stack>
+                    )}
                   </Grid>
                 </Grid>
                 <Button
                   type="submit"
                   fullWidth
                   variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
+                  sx={{
+                    mt: 3,
+                    mb: 2,
+                    borderRadius: 1,
+                    boxShadow: 2,
+                    textTransform: "none",
+                    bgcolor: theme.palette.primary.main,
+                    color: "#fff",
+                    "&:hover": {
+                      bgcolor: theme.palette.primary.dark,
+                    },
+                  }}
                 >
-                   ورود به پنل
+                  ورود
                 </Button>
-                <Grid container justifyContent="flex-end">
-                  <Grid item>
-
-                  </Grid>
-                </Grid>
               </Box>
             </Box>
-          </Container>
-        </div>
-      </ThemeProvider>
-
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Box
+              sx={{
+                height: "100%",
+                display: { xs: "none", md: "flex" },
+                alignItems: "center",
+                justifyContent: "center",
+                overflow: "hidden",
+              }}
+            >
+              <img
+                src={LoginPic}
+                alt="Login"
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  objectFit: "cover",
+                }}
+              />
+            </Box>
+          </Grid>
+        </Grid>
+      </Container>
+    </ThemeProvider>
   );
 }
