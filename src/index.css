@@ -1,3 +1,5 @@
+@import "../font/fonts.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -26,7 +28,12 @@ a:hover {
   color: #535bf2;
 }
 
+* {
+  font-family: PeydaWeb!important;
+  outline: none !important;
+  src: format("woff2")}
 body {
+  font-family: var(--font-peyda);
   margin: 0;
   display: flex;
   place-items: center;
@@ -70,3 +77,7 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+
+
+

@@ -40,3 +40,12 @@
 .read-the-docs {
   color: #888;
 }
+
+
+
+@font-face {
+  font-family: 'PeydaWeb';
+  src: url('/font/woff/PeydaWeb-Medium.woff') format('woff2');
+  font-weight: 500; 
+  font-style: normal;
+}

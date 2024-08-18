@@ -5,22 +5,22 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import rtlPlugin from "stylis-plugin-rtl";
 import { prefixer } from "stylis";
-function App() {
 
+import "./index.css";
+
+function App() {
   const cacheRtl = createCache({
     key: "muirtl",
     stylisPlugins: [prefixer, rtlPlugin],
   });
-  
+
   return (
     <>
-    <CacheProvider value={cacheRtl}>
-    <div dir="rtl">
-    <Login />
-    </div>
-    
-    </CacheProvider>
-      
+      <CacheProvider value={cacheRtl}>
+        <div dir="rtl">
+          <Login />
+        </div>
+      </CacheProvider>
     </>
   );
 }
