@@ -11,16 +11,9 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { CacheProvider } from "@emotion/react";
-import createCache from "@emotion/cache";
-import rtlPlugin from "stylis-plugin-rtl";
-import { prefixer } from "stylis";
 
-// Create RTL cache
-const cacheRtl = createCache({
-  key: "muirtl",
-  stylisPlugins: [prefixer, rtlPlugin],
-});
+
+
 
 const defaultTheme = createTheme();
 
@@ -31,9 +24,9 @@ export default function SignIn() {
   };
 
   return (
-    <CacheProvider value={cacheRtl}>
+    
       <ThemeProvider theme={defaultTheme}>
-        <div dir="rtl"> 
+        <div dir="rtl" className=""> 
           <Container component="main" maxWidth="xs">
             <CssBaseline />
             <Box
@@ -46,7 +39,7 @@ export default function SignIn() {
             >
               <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}></Avatar>
               <Typography component="h1" variant="h5">
-                Sign up
+                 ورود
               </Typography>
               <Box
                 component="form"
@@ -58,11 +51,11 @@ export default function SignIn() {
                   <Grid item xs={12} sm={6}>
                     <TextField
                       autoComplete="given-name"
-                      name="firstName"
+                      name="نام"
                       required
                       fullWidth
                       id="firstName"
-                      label="First Name"
+                      label="نام"
                       autoFocus
                     />
                   </Grid>
@@ -71,8 +64,8 @@ export default function SignIn() {
                       required
                       fullWidth
                       id="lastName"
-                      label="Last Name"
-                      name="lastName"
+                      label="نام خانوادگی"
+                      name="نام خانوادگی"
                       autoComplete="family-name"
                     />
                   </Grid>
@@ -81,29 +74,29 @@ export default function SignIn() {
                       required
                       fullWidth
                       id="email"
-                      label="Email Address"
-                      name="email"
-                      autoComplete="email"
+                      label="شماره تماس"
+                      name="phone"
+                      autoComplete="phone"
                     />
                   </Grid>
                   <Grid item xs={12}>
                     <TextField
                       required
                       fullWidth
-                      name="password"
-                      label="Password"
+                      name="رمز"
+                      label="رمز"
                       type="password"
                       id="password"
                       autoComplete="new-password"
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <FormControlLabel
+                    {/* <FormControlLabel
                       control={
                         <Checkbox value="allowExtraEmails" color="primary" />
                       }
-                      label="I want to receive inspiration, marketing promotions and updates via email."
-                    />
+                      label="I    , marketing promotions and updates via email."
+                    /> */}
                   </Grid>
                 </Grid>
                 <Button
@@ -112,13 +105,11 @@ export default function SignIn() {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  Sign Up
+                   ورود به پنل
                 </Button>
                 <Grid container justifyContent="flex-end">
                   <Grid item>
-                    <Link href="#" variant="body2">
-                      Already have an account? Sign in
-                    </Link>
+
                   </Grid>
                 </Grid>
               </Box>
@@ -126,6 +117,6 @@ export default function SignIn() {
           </Container>
         </div>
       </ThemeProvider>
-    </CacheProvider>
+
   );
 }
