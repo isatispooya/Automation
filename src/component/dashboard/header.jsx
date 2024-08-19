@@ -3,10 +3,11 @@ import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
+import { IoMdMenu } from "react-icons/io";
 import { createTheme, CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 
-export default function Header() {
+export default function Header({ onToggleSidebar }) {
   const theme = createTheme({
     palette: {
       primary: {
@@ -48,7 +49,8 @@ export default function Header() {
         }}
       >
         <Toolbar>
-          <IconButton
+          {/* Avatar on the left side */}
+          {/* <IconButton
             size="large"
             edge="start"
             color="inherit"
@@ -57,9 +59,21 @@ export default function Header() {
           >
             <Avatar alt="User Avatar" src="/static/images/avatar/1.jpg" />
           </IconButton>
+          
+          <div style={{ flexGrow: 1 }} /> */}
+          
+        
 
-          <div style={{ flexGrow: 1 }} />
-          <Button color="inherit">Login</Button>
+          <IconButton
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            onClick={onToggleSidebar}
+          >
+            <IoMdMenu />
+          </IconButton>
+          
         </Toolbar>
       </AppBar>
     </ThemeProvider>
