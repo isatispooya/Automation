@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -6,14 +6,14 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import LoginPic from "../../../public/img/login.jpg";
 import LoginForm from "./loginform";
-import LoginOtpForm from './otploginform'; 
+import LoginOtpForm from "./otploginform";
 
 const theme = createTheme({
   // Your theme configuration here
 });
 
 const LoginView = () => {
-  const [isOtpFormVisible, setIsOtpFormVisible] = useState(false); // State to toggle forms
+  const [isOtpFormVisible, setIsOtpFormVisible] = useState(false);
   const [isLoadingCaptcha, setIsLoadingCaptcha] = useState(true);
   const [captchaData, setCaptchaData] = useState(null);
   const [nationalCode, setNationalCode] = useState("");
@@ -26,7 +26,7 @@ const LoginView = () => {
       nationalCode: data.get("nationalCode"),
       captcha: data.get("captcha"),
     });
-    setIsOtpFormVisible(true); // Show OTP form on submit
+    setIsOtpFormVisible(true);
   };
 
   const fetchCaptcha = async () => {
@@ -35,6 +35,9 @@ const LoginView = () => {
       setCaptchaData({ image: "iVBORw0KGgoAAAANSUhEUgAAAA..." });
       setIsLoadingCaptcha(false);
     }, 2000);
+  };
+  const handelTransferLogin = () => {
+    setIsOtpFormVisible(false);
   };
 
   useEffect(() => {
@@ -61,7 +64,10 @@ const LoginView = () => {
                 setNationalCode={setNationalCode}
               />
             ) : (
-              <LoginOtpForm />
+              <LoginOtpForm
+                nationalCode={nationalCode}
+                handelTransferLogin={handelTransferLogin}
+              />
             )}
           </Grid>
 

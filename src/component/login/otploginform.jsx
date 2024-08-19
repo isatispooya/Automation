@@ -7,16 +7,18 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-const LoginOtpForm = () => {
+const LoginOtpForm = ({ nationalCode, handelTransferLogin }) => {
   const [otpcode, setOtpCode] = useState(null);
+  const Navigate = useNavigate();
 
   const handleSubmit = () => {
-   console.log("hi");
-   
+    Navigate("/");
   };
-
-
 
   return (
     <Grid item xs={12} md={10}>
@@ -50,7 +52,7 @@ const LoginOtpForm = () => {
           textAlign="center"
           sx={{ fontWeight: 700, mb: 2 }}
         >
-          تایید شماره موبایل 
+          تایید شماره موبایل
         </Typography>
         <Typography
           variant="body2"
@@ -58,7 +60,7 @@ const LoginOtpForm = () => {
           align="center"
           sx={{ mb: 3 }}
         >
-        لطفاً کدتایید ارسال شده به شماره موبایل خود را وارد کنید.
+          لطفاً کدتایید ارسال شده به شماره موبایل خود را وارد کنید.
         </Typography>
         <Box
           component="form"
@@ -71,6 +73,7 @@ const LoginOtpForm = () => {
               <TextField
                 disabled
                 fullWidth
+                value={nationalCode}
                 id="nationalCode"
                 label="کد ملی"
                 name="nationalCode"
@@ -100,7 +103,7 @@ const LoginOtpForm = () => {
             variant="contained"
             sx={{
               mt: 3,
-              mb: 2,
+              mb: 1,
               borderRadius: 1,
               boxShadow: 2,
               textTransform: "none",
@@ -113,9 +116,47 @@ const LoginOtpForm = () => {
           >
             ورود
           </Button>
+
+          <div
+            style={{
+              display: "flex",
+              marginTop: "10px",
+              fontSize: "14px",
+              fontWeight: "800",
+            }}
+          >
+            <Typography style={{ fontSize: "14px" }} marginRight={0.5}>
+              حساب کاربری دارید؟
+            </Typography>
+            <Link
+              fullWidth
+              size="medium"
+              type="submit"
+              variant="contained"
+              style={{ color: "blue", textDecoration: "underLine" }}
+              onClick={handelTransferLogin}
+            >
+              وارد شوید
+            </Link>
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+            />
+          </div>
         </Box>
       </Box>
     </Grid>
   );
+};
+
+LoginOtpForm.propTypes = {
+  nationalCode: PropTypes.object.isRequired,
+  handelTransferLogin: PropTypes.func.isRequired,
 };
 export default LoginOtpForm;
