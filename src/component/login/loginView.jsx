@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -5,41 +6,14 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import LoginPic from "../../../public/img/login.jpg";
 import LoginForm from "./loginform";
-import LoginOtpForm from "./otploginform";
-import { useEffect, useState } from "react";
+import LoginOtpForm from './otploginform'; 
 
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#1976d2",
-      dark: "#155a8a",
-    },
-    secondary: {
-      main: "#f50057",
-    },
-    background: {
-      paper: "#ffffff",
-    },
-    text: {
-      primary: "#333333",
-      secondary: "#666666",
-    },
-  },
-  typography: {
-    fontFamily: "Roboto, Arial, sans-serif",
-    h5: {
-      fontWeight: 700,
-      fontSize: "1.5rem",
-    },
-    body2: {
-      fontSize: "0.875rem",
-    },
-  },
+  // Your theme configuration here
 });
 
 const LoginView = () => {
-  const [firstForm, setFirstForm] = useState(true);
-  const [secondForm, setSecondForm] = useState(false);
+  const [isOtpFormVisible, setIsOtpFormVisible] = useState(false); // State to toggle forms
   const [isLoadingCaptcha, setIsLoadingCaptcha] = useState(true);
   const [captchaData, setCaptchaData] = useState(null);
   const [nationalCode, setNationalCode] = useState("");
@@ -52,6 +26,7 @@ const LoginView = () => {
       nationalCode: data.get("nationalCode"),
       captcha: data.get("captcha"),
     });
+    setIsOtpFormVisible(true); // Show OTP form on submit
   };
 
   const fetchCaptcha = async () => {
@@ -72,21 +47,22 @@ const LoginView = () => {
         <CssBaseline />
         <Grid
           container
-          sx={{ height: "100vh", alignItems: "center", px: { xs: 2, sm: 4 } }}
+          sx={{ height: "100vh", alignItems: "center", px: { xs: 12, sm: 4 } }}
           spacing={4}
         >
           <Grid item xs={12} md={6}>
-            {firstForm && !secondForm && (
+            {!isOtpFormVisible ? (
               <LoginForm
+                fetchCaptcha={fetchCaptcha}
                 handleSubmit={handleSubmit}
                 isLoadingCaptcha={isLoadingCaptcha}
                 captchaData={captchaData}
                 setCaptchaLogin={setCaptchaLogin}
                 setNationalCode={setNationalCode}
-                theme={theme}
               />
+            ) : (
+              <LoginOtpForm />
             )}
-            {secondForm && <LoginOtpForm />}
           </Grid>
 
           <Grid item xs={12} md={6}>

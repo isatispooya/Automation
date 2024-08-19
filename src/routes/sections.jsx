@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { Outlet, Navigate, useRoutes } from "react-router-dom";
+import LoginOtpForm from "../component/login/otploginform";
 
 // ----------------------------------------------------------------------
 
@@ -21,6 +22,7 @@ export default function Router() {
       path: "login",
       element: <LoginPage />,
     },
+
     {
       path: "/",
       element: <Main />,

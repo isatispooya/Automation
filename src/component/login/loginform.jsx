@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import {
   Avatar,
   Box,
@@ -9,13 +10,51 @@ import {
   Typography,
 } from "@mui/material";
 import PropTypes from 'prop-types';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+const LoginForm = ({
+  fetchCaptcha,
+  setCaptchaLogin,
+  setNationalCode,
+  captchaData,
+  isLoadingCaptcha,
+  handleSubmit
+}) => {
+  const [nationalCode, updateNationalCode] = useState("");
 
-const LoginForm = ({fetchCaptcha,setCaptchaLogin,setNationalCode,captchaData,isLoadingCaptcha,handleSubmit}) => {
+  const handleNationalCodeChange = (e) => {
+    const value = e.target.value;
 
+    
+    if (!/^\d*$/.test(value)) {
+      toast.error("لطفاً فقط اعداد را وارد کنید");
+      return;
+    }
+
+    // Check if the input length is more than 10 digits
+    if (value.length > 10) {
+      toast.error("کد ملی نمی‌تواند بیش از 10 رقم باشد");
+      return;
+    }
+
+    updateNationalCode(value);
+    setNationalCode(value);
+  };
+
+  const validateAndSubmit = (event) => {
+    event.preventDefault();
+
+    if (nationalCode.length < 10) {
+      toast.error("کد ملی باید 10 رقم باشد.");
+      return;
+    }
+
+    handleSubmit(event);
+  };
 
   return (
-    <Grid item xs={12} md={6}>
+    <Grid item xs={12} md={10}>
       <Box
         sx={{
           display: "flex",
@@ -59,7 +98,7 @@ const LoginForm = ({fetchCaptcha,setCaptchaLogin,setNationalCode,captchaData,isL
         <Box
           component="form"
           noValidate
-          onSubmit={handleSubmit}
+          onSubmit={validateAndSubmit}
           sx={{ width: "100%" }}
         >
           <Grid container spacing={2}>
@@ -73,7 +112,8 @@ const LoginForm = ({fetchCaptcha,setCaptchaLogin,setNationalCode,captchaData,isL
                 variant="outlined"
                 size="medium"
                 sx={{ borderRadius: 1 }}
-                onChange={(e) => setNationalCode(e.target.value)}
+                value={nationalCode}
+                onChange={handleNationalCodeChange}
               />
             </Grid>
             <Grid item xs={12}>
@@ -146,16 +186,18 @@ const LoginForm = ({fetchCaptcha,setCaptchaLogin,setNationalCode,captchaData,isL
           </Button>
         </Box>
       </Box>
+      <ToastContainer />
     </Grid>
   );
 };
 
 LoginForm.propTypes = {
-  fetchCaptcha: PropTypes.func.isRequired, // تابع برای دریافت Captcha
-  handleSubmit: PropTypes.func.isRequired, // تابع برای پس از ارسال کد OTP و ورود
-  captchaData: PropTypes.object.isRequired, // اطلاعات Captcha
-  isLoadingCaptcha: PropTypes.bool.isRequired, // وضعیت بارگذاری Captcha
-  setCaptchaLogin: PropTypes.func.isRequired, // تابع برای تنظیم Captcha در فرآیند ورود
-  setNationalCode: PropTypes.func.isRequired, // تابع برای تنظیم کد ملی
+  fetchCaptcha: PropTypes.func.isRequired, 
+  handleSubmit: PropTypes.func.isRequired, 
+  captchaData: PropTypes.object.isRequired, 
+  isLoadingCaptcha: PropTypes.bool.isRequired, 
+  setCaptchaLogin: PropTypes.func.isRequired, 
+  setNationalCode: PropTypes.func.isRequired, 
 };
+
 export default LoginForm;

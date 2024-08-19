@@ -76,7 +76,7 @@ export default function SignUp() {
           component={Box}
           sx={{ height: "100vh", alignItems: "center" }}
         >
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={2}> {/* Changed from md={10} to md={8} */}
             <Box
               sx={{
                 marginTop: 8,
@@ -217,7 +217,7 @@ export default function SignUp() {
                 overflow: "hidden",
               }}
             >
-              <img
+              {/* <img
                 src={LoginPic}
                 alt="Login"
                 style={{
@@ -225,7 +225,7 @@ export default function SignUp() {
                   height: "auto",
                   objectFit: "cover",
                 }}
-              />
+              /> */}
             </Box>
           </Grid>
         </Grid>
