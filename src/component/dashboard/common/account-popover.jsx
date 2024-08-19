@@ -9,6 +9,10 @@ import {
   MenuItem,
   Typography,
   ListItemIcon,
+  FormControl,
+  InputLabel,
+  Select,
+  Button,
 } from "@mui/material";
 import { CiLogout } from "react-icons/ci";
 
@@ -20,7 +24,7 @@ export default function AccountPopover() {
     fname: "آرمانی",
     phone: "09920118015",
     nationalCode: "4421997003",
-    role: 'مدیرعامل',
+    role: "مدیرعامل",
   };
 
   const handleOpen = (event) => {
@@ -124,14 +128,18 @@ export default function AccountPopover() {
           >
             {FakeData.name.charAt(0)}
           </Avatar>
-          <Typography variant="h6" fontWeight="bold" sx={{ color: "text.primary" }}>
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            sx={{ color: "text.primary" }}
+          >
             {FakeData.name} {FakeData.fname}
-            <Typography 
-              variant="body2" 
-              component="span" 
-              sx={{ 
-                color: "text.secondary", 
-                fontStyle: "italic", 
+            <Typography
+              variant="body2"
+              component="span"
+              sx={{
+                color: "text.secondary",
+                fontStyle: "italic",
                 ml: 0.5,
               }}
             >
@@ -144,7 +152,23 @@ export default function AccountPopover() {
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
             موبایل: {FakeData.phone}
           </Typography>
-          
+          <Divider sx={{ my: 2, width: "100%" }} />
+
+          <Box sx={{ minWidth: 200 }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">انتخاب نقش</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Age"
+              >
+                <MenuItem value={10}>مدیرعامل</MenuItem>
+                <MenuItem value={20}>مشتری</MenuItem>
+                <MenuItem value={30}>برنامه نویس</MenuItem>
+              </Select>
+            </FormControl>
+          </Box>
+
           <Divider sx={{ my: 2, width: "100%" }} />
           <MenuItem
             onClick={handleLogout}
