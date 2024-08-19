@@ -3,7 +3,13 @@ import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import { IoMdMenu } from "react-icons/io";
-import { Box, createTheme, CssBaseline, IconButton, Typography } from "@mui/material";
+import {
+  Box,
+  createTheme,
+  CssBaseline,
+  IconButton,
+  Typography,
+} from "@mui/material";
 
 import { ThemeProvider } from "@emotion/react";
 import AccountPopover from "./common/account-popover";
@@ -38,55 +44,41 @@ export default function Header({ onToggleSidebar }) {
     },
   });
 
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <AppBar 
-        position="fixed" 
-        sx={{ 
-          width: "100%", 
-          left: 0, 
-          right: 0 
+      <AppBar
+        position="fixed"
+        sx={{
+          width: "100%",
+          left: 0,
+          right: 0,
         }}
       >
         <Toolbar>
-
-          
-        
-
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="menu"
-            onClick={onToggleSidebar}
-          >
-            <IoMdMenu />
-          </IconButton>
-          
-        </Toolbar>
-        <Box sx={{ flexGrow: 1 }}>
-          <AppBar
-            position="static"
+          <Box
             sx={{
-              background: 'linear-gradient(60deg,#2196f3, #1565c0)',
-              position: 'fixed',
-              zIndex: '1000',
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+              alignItems: "center",
             }}
           >
-            <Toolbar>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                
-                <Avatar sx={{ bgcolor: '#e3f2fd' }}>
-                <AccountPopover />
-              </Avatar>
-              </Box>
-            </Toolbar>
-          </AppBar>
-        </Box>
+            <IconButton
+              size="large"
+              edge="end"
+              color="inherit"
+              aria-label="menu"
+              onClick={onToggleSidebar}
+            >
+              <IoMdMenu />
+            </IconButton>
+            <Avatar sx={{ bgcolor: "#e3f2fd" }}>
+              <AccountPopover />
+            </Avatar>
+            
+          </Box>
+        </Toolbar>
       </AppBar>
     </ThemeProvider>
   );
