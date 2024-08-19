@@ -1,10 +1,10 @@
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
-import { createTheme, CssBaseline } from "@mui/material";
+import { Box, createTheme, CssBaseline, Typography } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
+import AccountPopover from "./common/account-popover";
 
 export default function Header() {
   const theme = createTheme({
@@ -36,6 +36,7 @@ export default function Header() {
     },
   });
 
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -47,20 +48,27 @@ export default function Header() {
           right: 0 
         }}
       >
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="avatar"
-            sx={{ mr: 2 }}
+        <Box sx={{ flexGrow: 1 }}>
+          <AppBar
+            position="static"
+            sx={{
+              background: 'linear-gradient(60deg,#2196f3, #1565c0)',
+              position: 'fixed',
+              zIndex: '1000',
+            }}
           >
-            <Avatar alt="User Avatar" src="/static/images/avatar/1.jpg" />
-          </IconButton>
-
-          <div style={{ flexGrow: 1 }} />
-          <Button color="inherit">Login</Button>
-        </Toolbar>
+            <Toolbar>
+              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                
+                <Avatar sx={{ bgcolor: '#e3f2fd' }}>
+                <AccountPopover />
+              </Avatar>
+              </Box>
+            </Toolbar>
+          </AppBar>
+        </Box>
       </AppBar>
     </ThemeProvider>
   );
