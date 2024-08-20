@@ -7,12 +7,25 @@ const MainView = lazy(() => import("../pages/mainview"));
 const Page404 = lazy(() => import("../pages/notFoundView"));
 const Desk = lazy(() => import("../layouts/desk"));
 
+// Skeleton Loader Component
+function SkeletonLoader() {
+  return (
+    <div className="animate-pulse space-y-4 p-4">
+      <div className="h-4 bg-gray-300 rounded"></div>
+      <div className="h-4 bg-gray-300 rounded"></div>
+      <div className="h-4 bg-gray-300 rounded"></div>
+      <div className="h-4 bg-gray-300 rounded"></div>
+      <div className="h-4 bg-gray-300 rounded"></div>
+    </div>
+  );
+}
+
 export default function Router() {
   const routes = useRoutes([
     {
       path: "/",
       element: (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<SkeletonLoader />}>
           <MainView />
         </Suspense>
       ),
@@ -20,7 +33,7 @@ export default function Router() {
     {
       path: "login",
       element: (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<SkeletonLoader />}>
           <LoginPage />
         </Suspense>
       ),
@@ -28,7 +41,7 @@ export default function Router() {
     {
       path: "desk",
       element: (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<SkeletonLoader />}>
           <Desk />
         </Suspense>
       ),
@@ -36,7 +49,7 @@ export default function Router() {
     {
       path: "404",
       element: (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<SkeletonLoader />}>
           <Page404 />
         </Suspense>
       ),
@@ -49,4 +62,3 @@ export default function Router() {
 
   return routes;
 }
-
