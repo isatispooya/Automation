@@ -118,35 +118,35 @@ const SideBar = () => {
   };
 
   const filterSections = (sections, term) => {
-    return sections.map((section) => {
-      let matchFound = false;
-
-      if (section.label.startsWith(term)) {
-        matchFound = true;
-      }
-
-      if (section.child) {
-        const filteredChild = filterSections(section.child, term);
-
-        if (filteredChild.some((child) => child.matchFound)) {
+    return sections
+      .map((section) => {
+        let matchFound = false;
+        if (section.label.startsWith(term)) {
           matchFound = true;
-          section.child = filteredChild;
-          section.isOpen = true;
+        }
+        if (section.child) {
+          const filteredChild = filterSections(section.child, term);
+
+          if (filteredChild.some((child) => child.matchFound)) {
+            matchFound = true;
+            section.child = filteredChild;
+            section.isOpen = true;
+          } else {
+            section.isOpen = false;
+          }
         } else {
           section.isOpen = false;
         }
-      } else {
-        section.isOpen = false;
-      }
 
-      return { ...section, matchFound };
-    });
+        return matchFound ? { ...section, matchFound } : null;
+      })
+      .filter(Boolean);
   };
 
   const renderSections = (sections, parentPath = "") => {
     return sections.map((section, index) => {
       const sectionPath = parentPath ? `${parentPath}-${index}` : `${index}`;
-  
+
       return (
         <div key={sectionPath} className="relative mb-2">
           {section.child ? (
@@ -185,7 +185,6 @@ const SideBar = () => {
       );
     });
   };
-  
 
   return (
     <ThemeProvider theme={theme}>
