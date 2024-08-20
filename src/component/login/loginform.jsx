@@ -32,7 +32,7 @@ const LoginForm = ({
       return;
     }
 
-    // Check if the input length is more than 10 digits
+   
     if (value.length > 10) {
       toast.error("کد ملی نمی‌تواند بیش از 10 رقم باشد");
       return;
