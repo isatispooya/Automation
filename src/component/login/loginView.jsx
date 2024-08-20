@@ -45,11 +45,7 @@ const LoginView = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      nationalCode: data.get("nationalCode"),
-      captcha: data.get("captcha"),
-    });
+
     setIsOtpFormVisible(true);
   };
 
