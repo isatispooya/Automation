@@ -1,6 +1,6 @@
+import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
-import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import { IoMdMenu } from "react-icons/io";
 import {
@@ -8,9 +8,9 @@ import {
   createTheme,
   CssBaseline,
   IconButton,
+  useMediaQuery,
   Typography,
 } from "@mui/material";
-
 import { ThemeProvider } from "@emotion/react";
 import AccountPopover from "./common/account-popover";
 
@@ -44,6 +44,8 @@ export default function Header({ onToggleSidebar }) {
     },
   });
 
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -62,21 +64,29 @@ export default function Header({ onToggleSidebar }) {
               justifyContent: "space-between",
               width: "100%",
               alignItems: "center",
+              flexDirection: isMobile ? "row" : "row",
             }}
           >
             <IconButton
               size="large"
-              edge="end"
+              edge="start"
               color="inherit"
               aria-label="menu"
               onClick={onToggleSidebar}
+              sx={{ mr: 2 }}
             >
               <IoMdMenu />
             </IconButton>
-            <Avatar sx={{ bgcolor: "#e3f2fd" }}>
+
+            {!isMobile && (
+              <Typography variant="h6" noWrap component="div">
+                میزکار من 
+              </Typography>
+            )}
+
+            <Avatar sx={{ bgcolor: "#e3f2fd", marginLeft: "auto" }}>
               <AccountPopover />
             </Avatar>
-            
           </Box>
         </Toolbar>
       </AppBar>

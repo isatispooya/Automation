@@ -18,6 +18,30 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary) var(--primary);
+}
+
+/* Chrome, Edge, and Safari */
+*::-webkit-scrollbar {
+  width: 8px;
+}
+
+*::-webkit-scrollbar-track {
+  background: var(--primary);
+  border-radius: 15px !important; 
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  border-radius: 20px !important;
+  border: 7px solid var(--primary);
+}
+:root {
+  --primary: rgb(0, 38, 255) !important ; 
+  --secondary: rgb(253, 253, 253) !important;
+}
 
 a {
   font-weight: 500;

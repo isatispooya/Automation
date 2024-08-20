@@ -10,9 +10,10 @@ const Desk = ({ children }) => {
   };
 
   return (
-    <>
-      <Header onToggleSidebar={toggleSidebar} />
-      <div className="relative flex">
+    <> 
+    <div className="overflow-y-auto overflow-x-auto ">
+    <Header onToggleSidebar={toggleSidebar} />
+      <div className="relative flex ">
         <div
           className={`fixed right-0 top-0 h-full  bg-white shadow-lg transition-all duration-300 ease-in-out transform ${
             isSidebarOpen ? "translate-x-0 opacity-100" : "-translate-x-full opacity-0"
@@ -25,6 +26,8 @@ const Desk = ({ children }) => {
           {children}
         </main>
       </div>
+    </div>
+
     </>
   );
 };
