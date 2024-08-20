@@ -23,7 +23,7 @@
   scrollbar-color: var(--secondary) var(--primary);
 }
 
-/* Chrome, Edge, and Safari */
+
 *::-webkit-scrollbar {
   width: 8px;
 }
