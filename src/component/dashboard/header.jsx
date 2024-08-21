@@ -18,7 +18,7 @@ export default function Header({ onToggleSidebar }) {
   const theme = createTheme({
     palette: {
       primary: {
-        main: "#1976d2",
+        main: "#1565c0",
         dark: "#155a8a",
       },
       secondary: {
