@@ -6,6 +6,7 @@ const LoginPage = lazy(() => import("../pages/login"));
 const MainView = lazy(() => import("../pages/mainview"));
 const Page404 = lazy(() => import("../pages/notFoundView"));
 const Desk = lazy(() => import("../layouts/desk"));
+const ProfileView = lazy(() => import("../pages/profileView"));
 
 // Skeleton Loader Component
 function SkeletonLoader() {
@@ -58,6 +59,14 @@ export default function Router() {
       path: "*",
       element: <Navigate to="/404" replace />,
     },
+    {
+      path : "profile view",
+      element: (
+        <Suspense fallback={<SkeletonLoader />}>
+          <ProfileView />
+        </Suspense>
+      ),
+    }
   ]);
 
   return routes;

@@ -1,5 +1,11 @@
-import { ThemeProvider } from "@emotion/react";
-import { createTheme, CssBaseline, Box, InputAdornment } from "@mui/material";
+import {
+  ThemeProvider,
+  createTheme,
+  CssBaseline,
+  Box,
+  InputAdornment,
+  TextField,
+} from "@mui/material";
 import { useState } from "react";
 import { FaTasks } from "react-icons/fa";
 import { MdCoPresent } from "react-icons/md";
@@ -7,36 +13,21 @@ import { CgProfile } from "react-icons/cg";
 import { CiSettings } from "react-icons/ci";
 import { TbDoorExit } from "react-icons/tb";
 import { RiArrowDropDownLine } from "react-icons/ri";
-import TextField from "@mui/material/TextField";
 import { BsSearch } from "react-icons/bs";
+import PropTypes from "prop-types";
 
-const SideBar = () => {
+const SideBar = ({ onShowProfile }) => {
   const theme = createTheme({
     palette: {
-      primary: {
-        main: "#1976d2",
-        dark: "#155a8a",
-      },
-      secondary: {
-        main: "#f50057",
-      },
-      background: {
-        paper: "#ffffff",
-      },
-      text: {
-        primary: "#333333",
-        secondary: "#666666",
-      },
+      primary: { main: "#1976d2", dark: "#155a8a" },
+      secondary: { main: "#f50057" },
+      background: { paper: "#ffffff" },
+      text: { primary: "#333333", secondary: "#666666" },
     },
     typography: {
       fontFamily: "Vazir, Roboto, Arial, sans-serif",
-      h5: {
-        fontWeight: 700,
-        fontSize: "1.5rem",
-      },
-      body2: {
-        fontSize: "0.875rem",
-      },
+      h5: { fontWeight: 700, fontSize: "1.5rem" },
+      body2: { fontSize: "0.875rem" },
     },
   });
 
@@ -58,7 +49,12 @@ const SideBar = () => {
       label: "پروفایل",
       isOpen: false,
       child: [
-        { icon: <CgProfile />, label: "اطلاعات کاربر", isOpen: false },
+        {
+          icon: <CgProfile />,
+          label: "اطلاعات کاربر",
+          isOpen: false,
+          onClick: onShowProfile,
+        },
         {
           icon: <CgProfile />,
           label: "تغییر رمز عبور",
@@ -66,8 +62,8 @@ const SideBar = () => {
           child: [
             {
               icon: <CgProfile />,
-              isOpen: false,
               label: " حریم خصوصی",
+              isOpen: false,
               child: [
                 { icon: <CgProfile />, label: "سلام سلام", isOpen: false },
               ],
@@ -76,17 +72,8 @@ const SideBar = () => {
         },
       ],
     },
-    {
-      icon: <CiSettings />,
-      label: "تنظیمات",
-      isOpen: false,
-    },
-    {
-      icon: <TbDoorExit />,
-      label: "خروج",
-      color: "#d32f2f",
-      isOpen: false,
-    },
+    { icon: <CiSettings />, label: "تنظیمات", isOpen: false },
+    { icon: <TbDoorExit />, label: "خروج", color: "#d32f2f", isOpen: false },
   ];
 
   const [sections, setSections] = useState(initialSections);
@@ -108,12 +95,10 @@ const SideBar = () => {
   const handleSearchChange = (event) => {
     const term = event.target.value;
     setSearchTerm(term);
-
     if (term === "") {
       setSections(initialSections);
     } else {
-      const newSections = filterSections(initialSections, term);
-      setSections(newSections);
+      setSections(filterSections(initialSections, term));
     }
   };
 
@@ -126,19 +111,15 @@ const SideBar = () => {
         }
         if (section.child) {
           const filteredChild = filterSections(section.child, term);
-
-          if (filteredChild.some((child) => child.matchFound)) {
+          if (filteredChild.length > 0) {
             matchFound = true;
             section.child = filteredChild;
             section.isOpen = true;
           } else {
             section.isOpen = false;
           }
-        } else {
-          section.isOpen = false;
         }
-
-        return matchFound ? { ...section, matchFound } : null;
+        return matchFound ? { ...section } : null;
       })
       .filter(Boolean);
   };
@@ -146,7 +127,6 @@ const SideBar = () => {
   const renderSections = (sections, parentPath = "") => {
     return sections.map((section, index) => {
       const sectionPath = parentPath ? `${parentPath}-${index}` : `${index}`;
-
       return (
         <div key={sectionPath} className="relative mb-2">
           {section.child ? (
@@ -154,7 +134,7 @@ const SideBar = () => {
               <div
                 role="button"
                 onClick={() => toggleDropdown(sectionPath)}
-                className="flex justify-between items-center w-full p-3 rounded-lg leading-tight transition-all duration-300 ease-in-out border-b-2  bg-gray-100 hover:bg-gray-300 cursor-pointer"
+                className="flex justify-between items-center w-full p-3 rounded-lg leading-tight transition-all duration-300 ease-in-out border-b-2 bg-gray-100 hover:bg-gray-300 cursor-pointer"
               >
                 <div className="flex items-center">
                   {section.icon}
@@ -163,7 +143,7 @@ const SideBar = () => {
                 <RiArrowDropDownLine className="text-xl" />
               </div>
               <div
-                className={`transition-max-height duration-500 ease-in-out overflow-hidden rounded-lg  ${
+                className={`transition-max-height duration-500 ease-in-out overflow-hidden rounded-lg ${
                   section.isOpen ? "max-h-96" : "max-h-0"
                 }`}
               >
@@ -173,6 +153,7 @@ const SideBar = () => {
           ) : (
             <div
               role="button"
+              onClick={section.onClick}
               className={`flex text-left items-center w-full p-3 rounded-lg leading-tight transition-all duration-300 ease-in-out ${
                 parentPath ? "" : "bg-gray-100 hover:bg-gray-300"
               } cursor-pointer`}
@@ -234,4 +215,7 @@ const SideBar = () => {
   );
 };
 
+SideBar.propTypes = {
+  onShowProfile: PropTypes.func.isRequired,
+};
 export default SideBar;

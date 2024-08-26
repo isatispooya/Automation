@@ -40,7 +40,7 @@ const LoginOtpForm = ({ nationalCode, handelTransferLogin }) => {
         <Avatar
           sx={{
             m: 1,
-            bgcolor: "#1565c0",
+            bgcolor: "#3730a3",
             width: 80,
             height: 80,
           }}
@@ -107,7 +107,7 @@ const LoginOtpForm = ({ nationalCode, handelTransferLogin }) => {
               borderRadius: 1,
               boxShadow: 2,
               textTransform: "none",
-              bgcolor: "#1565c0",
+              bgcolor: "#3730a3",
               color: "#fff",
               "&:hover": {
                 bgcolor: "#0d47a1",

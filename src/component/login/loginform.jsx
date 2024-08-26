@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect } from "react";
 import {
   Avatar,
   Box,
@@ -9,46 +9,67 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import PropTypes from 'prop-types';
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import PropTypes from "prop-types";
+import { OnRun } from "../api/config";
 
-const LoginForm = ({
-  fetchCaptcha,
-  setCaptchaLogin,
-  setNationalCode,
-  captchaData,
-  isLoadingCaptcha,
-  handleSubmit
-}) => {
-  const [nationalCode, updateNationalCode] = useState("");
+const LoginForm = ({ handleSubmit, setNationalCode }) => {
+  const [captchaData, setCaptchaData] = useState({ image: '', encrypted_response: '' });
+  const [captchaValue, setCaptchaValue] = useState("");
+  const [isLoadingCaptcha, setIsLoadingCaptcha] = useState(true);
+  const [nationalCode, setNationalCodeState] = useState("");
 
   const handleNationalCodeChange = (e) => {
     const value = e.target.value;
 
-    
     if (!/^\d*$/.test(value)) {
       toast.error("لطفاً فقط اعداد را وارد کنید");
       return;
     }
 
-   
     if (value.length > 10) {
       toast.error("کد ملی نمی‌تواند بیش از 10 رقم باشد");
       return;
     }
 
-    updateNationalCode(value);
+    setNationalCodeState(value);
     setNationalCode(value);
   };
+
+  const fetchCaptchaFromServer = async () => {
+    setIsLoadingCaptcha(true);
+    try {
+      const { data: captcha } = await axios.get(`${OnRun}/captcha/`);
+
+      if (captcha?.image && captcha?.encrypted_response) {
+        setCaptchaData({ image: captcha.image, encrypted_response: captcha.encrypted_response });
+        setCaptchaValue(""); // Reset the captcha input
+      } else {
+        throw new Error("Captcha data is undefined");
+      }
+    } catch (error) {
+      console.error("Captcha error:", error);
+      toast.error("خطا در دریافت کپچا، مجدداً بارگذاری کنید");
+    } finally {
+      setIsLoadingCaptcha(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCaptchaFromServer();
+  }, []);
 
   const validateAndSubmit = (event) => {
     event.preventDefault();
 
-    if (nationalCode.length < 10) {
-      toast.error("کد ملی باید 10 رقم باشد.");
+    if (nationalCode.length !== 10) {
+      toast.error("کد ملی باید  10 رقم باشد");
       return;
     }
+
+
 
     handleSubmit(event);
   };
@@ -73,15 +94,14 @@ const LoginForm = ({
         <Avatar
           sx={{
             m: 1,
-            bgcolor: "#1565c0",
+            bgcolor: "#3730a3",
             width: 80,
             height: 80,
           }}
-        ></Avatar>
+        />
         <Typography
           component="h1"
           variant="h5"
-          color="black"
           textAlign="center"
           sx={{ fontWeight: 700, mb: 2 }}
         >
@@ -107,13 +127,12 @@ const LoginForm = ({
                 fullWidth
                 id="nationalCode"
                 label="کد ملی"
-                name="nationalCode"
-                autoComplete="nationalCode"
                 variant="outlined"
                 size="medium"
                 sx={{ borderRadius: 1 }}
                 value={nationalCode}
                 onChange={handleNationalCodeChange}
+                inputProps={{ maxLength: 10 }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -121,12 +140,11 @@ const LoginForm = ({
                 fullWidth
                 id="captcha"
                 label="کد کپچا"
-                name="captcha"
-                autoComplete="captcha"
                 variant="outlined"
                 size="medium"
                 sx={{ borderRadius: 1 }}
-                onChange={(e) => setCaptchaLogin(e.target.value)}
+                value={captchaValue}
+                onChange={(e) => setCaptchaValue(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -148,19 +166,18 @@ const LoginForm = ({
                   spacing={1}
                   sx={{ my: 2 }}
                 >
-                  <Button onClick={fetchCaptcha} sx={{ p: 0 }}>
-                    <img
-                      src={`data:image/png;base64,${captchaData?.image}`}
-                      alt="captcha"
-                      style={{
-                        width: "100%",
-                        height: "auto",
-                        borderRadius: "4px",
-                        border: "1px solid #ddd",
-                        objectFit: "contain",
-                      }}
-                    />
-                  </Button>
+                  <img
+                    src={`data:image/jpeg;base64,${captchaData.image}`}
+                    alt="captcha"
+                    onClick={fetchCaptchaFromServer}
+                    style={{
+                      width: "100%",
+                      height: "80% ",
+                      borderRadius: "4px",
+                      border: "1px solid #ddd",
+                      objectFit: "contain",
+                    }}
+                  />
                 </Stack>
               )}
             </Grid>
@@ -175,7 +192,7 @@ const LoginForm = ({
               borderRadius: 1,
               boxShadow: 2,
               textTransform: "none",
-              bgcolor: "#1565c0",
+              bgcolor: "#3730a3",
               color: "#fff",
               "&:hover": {
                 bgcolor: "#0d47a1",
@@ -192,12 +209,8 @@ const LoginForm = ({
 };
 
 LoginForm.propTypes = {
-  fetchCaptcha: PropTypes.func.isRequired, 
-  handleSubmit: PropTypes.func.isRequired, 
-  captchaData: PropTypes.object.isRequired, 
-  isLoadingCaptcha: PropTypes.bool.isRequired, 
-  setCaptchaLogin: PropTypes.func.isRequired, 
-  setNationalCode: PropTypes.func.isRequired, 
+  handleSubmit: PropTypes.func.isRequired,
+  setNationalCode: PropTypes.func.isRequired,
 };
 
 export default LoginForm;

@@ -1,4 +1,3 @@
-import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Avatar from "@mui/material/Avatar";
@@ -13,6 +12,8 @@ import {
 } from "@mui/material";
 import { ThemeProvider } from "@emotion/react";
 import AccountPopover from "./common/account-popover";
+import PropTypes from "prop-types";
+
 
 export default function Header({ onToggleSidebar }) {
   const theme = createTheme({
@@ -55,6 +56,7 @@ export default function Header({ onToggleSidebar }) {
           width: "100%",
           left: 0,
           right: 0,
+          backgroundColor: theme.palette.primary.main,
         }}
       >
         <Toolbar>
@@ -64,7 +66,7 @@ export default function Header({ onToggleSidebar }) {
               justifyContent: "space-between",
               width: "100%",
               alignItems: "center",
-              flexDirection: isMobile ? "row" : "row",
+              flexDirection: "row",
             }}
           >
             <IconButton
@@ -80,16 +82,22 @@ export default function Header({ onToggleSidebar }) {
 
             {!isMobile && (
               <Typography variant="h6" noWrap component="div">
-                میزکار من 
+                میزکار من
               </Typography>
             )}
 
-            <Avatar sx={{ bgcolor: "#e3f2fd", marginLeft: "auto" }}>
-              <AccountPopover />
-            </Avatar>
+            <Box sx={{ display: "flex", alignItems: "center", marginLeft: "auto" }}>
+              <Avatar sx={{ bgcolor: "#e3f2fd" }}>
+                <AccountPopover />
+              </Avatar>
+            </Box>
           </Box>
         </Toolbar>
       </AppBar>
     </ThemeProvider>
   );
 }
+
+Header.propTypes = {
+  onToggleSidebar : PropTypes.func.isRequired,
+};

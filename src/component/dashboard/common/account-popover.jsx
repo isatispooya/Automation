@@ -18,6 +18,7 @@ import { CiLogout } from "react-icons/ci";
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+
   const navigate = useNavigate();
   const FakeData = {
     name: "آندیا",
@@ -170,6 +171,7 @@ export default function AccountPopover() {
           </Box>
 
           <Divider sx={{ my: 2, width: "100%" }} />
+
           <MenuItem
             onClick={handleLogout}
             sx={{
