@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Avatar,
   Box,
@@ -10,15 +10,21 @@ import {
   Typography,
 } from "@mui/material";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import axios from "axios";
 import PropTypes from "prop-types";
-import { OnRun } from "../api/config";
+import { useCaptcha } from "../../hooks/useCaptcha";
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginForm = ({ handleSubmit, setNationalCode }) => {
-  const [captchaData, setCaptchaData] = useState({ image: '', encrypted_response: '' });
-  const [captchaValue, setCaptchaValue] = useState("");
-  const [isLoadingCaptcha, setIsLoadingCaptcha] = useState(true);
+  const {
+    captchaData,
+    captchaValue,
+    setCaptchaValue,
+    fetchCaptcha,
+    isLoadingCaptcha,
+    isErrorCaptcha,
+    errorCaptcha,
+  } = useCaptcha();
+
   const [nationalCode, setNationalCodeState] = useState("");
 
   const handleNationalCodeChange = (e) => {
@@ -38,38 +44,13 @@ const LoginForm = ({ handleSubmit, setNationalCode }) => {
     setNationalCode(value);
   };
 
-  const fetchCaptchaFromServer = async () => {
-    setIsLoadingCaptcha(true);
-    try {
-      const { data: captcha } = await axios.get(`${OnRun}/captcha/`);
-
-      if (captcha?.image && captcha?.encrypted_response) {
-        setCaptchaData({ image: captcha.image, encrypted_response: captcha.encrypted_response });
-        setCaptchaValue(""); // Reset the captcha input
-      } else {
-        throw new Error("Captcha data is undefined");
-      }
-    } catch (error) {
-      console.error("Captcha error:", error);
-      toast.error("خطا در دریافت کپچا، مجدداً بارگذاری کنید");
-    } finally {
-      setIsLoadingCaptcha(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchCaptchaFromServer();
-  }, []);
-
   const validateAndSubmit = (event) => {
     event.preventDefault();
 
     if (nationalCode.length !== 10) {
-      toast.error("کد ملی باید  10 رقم باشد");
+      toast.error("کد ملی باید 10 رقم باشد");
       return;
     }
-
-
 
     handleSubmit(event);
   };
@@ -167,18 +148,24 @@ const LoginForm = ({ handleSubmit, setNationalCode }) => {
                   sx={{ my: 2 }}
                 >
                   <img
-                    src={`data:image/jpeg;base64,${captchaData.image}`}
+                    src={`data:image/jpeg;base64,${captchaData?.image}`}
                     alt="captcha"
-                    onClick={fetchCaptchaFromServer}
+                    onClick={fetchCaptcha}
                     style={{
                       width: "100%",
-                      height: "80% ",
+                      height: "80%",
                       borderRadius: "4px",
                       border: "1px solid #ddd",
                       objectFit: "contain",
+                      cursor: "pointer",
                     }}
                   />
                 </Stack>
+              )}
+              {isErrorCaptcha && (
+                <Typography color="error" variant="body2" align="center">
+                  {errorCaptcha?.message || "خطا در بارگذاری کپچا"}
+                </Typography>
               )}
             </Grid>
           </Grid>

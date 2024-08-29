@@ -6,13 +6,11 @@ import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 
 import { RouterLink } from "../routes/components";
-import error404 from '../../public/img/error404.jpg'
+// import error404 from "../../assets/img/error404.jpg";
 
 // ----------------------------------------------------------------------
 
 export default function NotFoundView() {
-
-
   const theme = createTheme({
     palette: {
       primary: {
@@ -70,7 +68,7 @@ export default function NotFoundView() {
                 آدرس را اشتباه تایپ کرده اید؟ از درستی آدرس خود مطمئن شوید.
               </Typography>
 
-              <Box
+              {/* <Box
                 component="img"
                 src={error404}
                 sx={{
@@ -78,14 +76,14 @@ export default function NotFoundView() {
                   height: 300,
                   my: { xs: 5, sm: 10 },
                 }}
-              />
+              /> */}
 
               <Button
                 href="/"
                 size="large"
                 variant="contained"
                 component={RouterLink}
-                sx={{backgroundColor:'#0d47a1'}}
+                sx={{ backgroundColor: "#0d47a1" }}
               >
                 بازگشت به خانه
               </Button>

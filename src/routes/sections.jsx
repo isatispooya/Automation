@@ -4,9 +4,9 @@ import { useRoutes, Navigate } from "react-router-dom";
 // Lazy loading components
 const LoginPage = lazy(() => import("../pages/login"));
 const MainView = lazy(() => import("../pages/mainview"));
-const Page404 = lazy(() => import("../pages/notFoundView"));
-const Desk = lazy(() => import("../layouts/desk"));
-const ProfileView = lazy(() => import("../pages/profileView"));
+const Page404 = lazy(() => import("../pages/notFound"));
+const Desk = lazy(() => import("../components/desk/desk"));
+const CreateCompany = lazy(() => import("../pages/createCompany"));
 
 // Skeleton Loader Component
 function SkeletonLoader() {
@@ -60,13 +60,13 @@ export default function Router() {
       element: <Navigate to="/404" replace />,
     },
     {
-      path : "profile view",
+      path: "/createCompany",
       element: (
         <Suspense fallback={<SkeletonLoader />}>
-          <ProfileView />
+          <CreateCompany />
         </Suspense>
       ),
-    }
+    },
   ]);
 
   return routes;

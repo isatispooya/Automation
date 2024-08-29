@@ -12,11 +12,12 @@ import { MdCoPresent } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { CiSettings } from "react-icons/ci";
 import { TbDoorExit } from "react-icons/tb";
+import { IoIosCreate } from "react-icons/io";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { BsSearch } from "react-icons/bs";
 import PropTypes from "prop-types";
 
-const SideBar = ({ onShowProfile }) => {
+const SideBar = ({ onShowProfile, onShowCompany , onPageCreateCompany }) => {
   const theme = createTheme({
     palette: {
       primary: { main: "#1976d2", dark: "#155a8a" },
@@ -71,6 +72,15 @@ const SideBar = ({ onShowProfile }) => {
           ],
         },
       ],
+    },
+    {
+      icon: <IoIosCreate />,
+      label: " شرکت ها",
+      isOpen: false,
+      child: [{ icon: <IoIosCreate />, label: "مشاهده", isOpen: false , onClick: onShowCompany }
+        ,{ icon: <IoIosCreate />, label: "ایجاد", isOpen: false , onClick: onPageCreateCompany  }
+      ],
+      
     },
     { icon: <CiSettings />, label: "تنظیمات", isOpen: false },
     { icon: <TbDoorExit />, label: "خروج", color: "#d32f2f", isOpen: false },
@@ -177,7 +187,7 @@ const SideBar = ({ onShowProfile }) => {
         <div className="relative flex flex-col bg-clip-border rounded-xl bg-white text-gray-700 h-full w-full max-w-[20rem] p-4 shadow-lg shadow-blue-900/10 overflow-y-auto">
           <h2 className="flex flex-row flex-nowrap items-center mt-5 mb-5">
             <span className="flex-grow block border-t border-gray-400"></span>
-            <span className="flex-none block mx-4 px-4 py-2.5 text-xl rounded leading-none font-medium text-gray-600">
+            <span className="flex-none block mx-4 px-4 py-2.5 text-xl rounded leading-none font-medium text-[#400a6f]">
               پنل دسترسی
             </span>
             <span className="flex-grow block border-t border-gray-400"></span>
@@ -217,5 +227,8 @@ const SideBar = ({ onShowProfile }) => {
 
 SideBar.propTypes = {
   onShowProfile: PropTypes.func.isRequired,
+  onShowCompany: PropTypes.func.isRequired,
+  onPageCreateCompany: PropTypes.func.isRequired,
+
 };
 export default SideBar;

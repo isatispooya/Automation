@@ -1,6 +1,6 @@
 // import { Helmet } from "react-helmet-async";
 import { Helmet } from "react-helmet";
-import NotFoundView from "../component/notFoundView";
+import NotFoundView from "../components/notFoundView";
 
 // ----------------------------------------------------------------------
 

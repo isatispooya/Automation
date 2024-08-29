@@ -1,13 +1,12 @@
 import { useState } from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
-
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import LoginForm from "./LoginForm";
-import LoginOtpForm from "./otploginform";
-import LoginPic from "../../../public/img/recover pass1.png";
-import smsLoginPic from "../../../public/img/smsLogin.svg";
+import LoginOtpForm from "./otploginForm";
+import LoginPic from "../../../src/assets/img/recover pass1.png";
+import SmsLoginPic from "../../../src/assets/img/smsLogin.svg";
 
 const theme = createTheme({
   palette: {
@@ -39,15 +38,16 @@ const theme = createTheme({
 });
 
 const LoginView = () => {
-  const [isOtpFormVisible, setIsOtpFormVisible] = useState(false); //نمایش otp فرم 
-  const [nationalCode, setNationalCode] = useState(""); // استیت برای مدیریت رفتار اینپوت کدملی 
+  const [isOtpFormVisible, setIsOtpFormVisible] = useState(false);
+  const [nationalCode, setNationalCode] = useState("");
+  const [captchaData, setCaptchaData] = useState(null);
 
-  const handleSubmit = (event) => {
+  const handleLoginSubmit = (event) => {
     event.preventDefault();
     setIsOtpFormVisible(true);
-  }; // تابع برای ارسال 
+  };
 
-  const handleTransferLogin = () => setIsOtpFormVisible(false);
+  const handleBackToLogin = () => setIsOtpFormVisible(false);
 
   return (
     <ThemeProvider theme={theme}>
@@ -59,15 +59,17 @@ const LoginView = () => {
           spacing={4}
         >
           <Grid item xs={12} md={6}>
-            {!isOtpFormVisible ? (
-              <LoginForm
-                handleSubmit={handleSubmit}
-                setNationalCode={setNationalCode}
-              />
-            ) : (
+            {isOtpFormVisible ? (
               <LoginOtpForm
                 nationalCode={nationalCode}
-                handleTransferLogin={handleTransferLogin}
+                captchaData={captchaData}
+                handleTransferLogin={handleBackToLogin}
+              />
+            ) : (
+              <LoginForm
+                handleSubmit={handleLoginSubmit}
+                setNationalCode={setNationalCode}
+                setCaptchaData={setCaptchaData}
               />
             )}
           </Grid>
@@ -79,7 +81,7 @@ const LoginView = () => {
           >
             <img
               style={{ width: "100%", height: "auto", maxWidth: "500px" }}
-              src={isOtpFormVisible ? smsLoginPic : LoginPic}
+              src={isOtpFormVisible ? SmsLoginPic : LoginPic}
               alt="Login"
             />
           </Grid>

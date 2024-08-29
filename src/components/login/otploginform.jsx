@@ -1,3 +1,5 @@
+import { useState } from "react";
+import PropTypes from "prop-types";
 import {
   Avatar,
   Box,
@@ -6,18 +8,36 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useOtp } from "../../hooks/useOtp";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const LoginOtpForm = ({ nationalCode, handelTransferLogin }) => {
-  const [otpcode, setOtpCode] = useState(null);
-  const Navigate = useNavigate();
+const LoginOtpForm = ({ nationalCode, captchaData, handleTransferLogin }) => {
+  const [otpCode, setOtpCode] = useState("");
+  const navigate = useNavigate();
+  const { sendOtp, isLoading, isError, error } = useOtp();
 
-  const handleSubmit = () => {
-    Navigate("/");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!otpCode.trim()) {
+      toast.error("لطفاً کد تایید را وارد کنید");
+      return;
+    }
+
+    try {
+      await sendOtp({
+        national_code: nationalCode,
+        encrypted_response: otpCode,
+        captcha: captchaData?.captcha || "",
+      });
+
+      toast.success("کد تایید با موفقیت ارسال شد");
+      navigate("/"); // هدایت به صفحه اصلی یا هر صفحه دلخواه دیگر
+    } catch (error) {
+      console.error("Failed to send OTP", error);
+    }
   };
 
   return (
@@ -44,13 +64,11 @@ const LoginOtpForm = ({ nationalCode, handelTransferLogin }) => {
             width: 80,
             height: 80,
           }}
-        ></Avatar>
+        />
         <Typography
           component="h1"
           variant="h5"
-          color="black"
-          textAlign="center"
-          sx={{ fontWeight: 700, mb: 2 }}
+          sx={{ fontWeight: 700, mb: 2, color: "black", textAlign: "center" }}
         >
           تایید شماره موبایل
         </Typography>
@@ -76,8 +94,6 @@ const LoginOtpForm = ({ nationalCode, handelTransferLogin }) => {
                 value={nationalCode}
                 id="nationalCode"
                 label="کد ملی"
-                name="nationalCode"
-                autoComplete="nationalCode"
                 variant="outlined"
                 size="medium"
                 sx={{ borderRadius: 1 }}
@@ -88,12 +104,11 @@ const LoginOtpForm = ({ nationalCode, handelTransferLogin }) => {
                 fullWidth
                 id="otpCode"
                 label="کد تایید"
-                name="otpCode"
-                autoComplete="otpCode"
                 variant="outlined"
                 size="medium"
-                sx={{ borderRadius: 1 }}
+                value={otpCode}
                 onChange={(e) => setOtpCode(e.target.value)}
+                sx={{ borderRadius: 1 }}
               />
             </Grid>
           </Grid>
@@ -113,50 +128,60 @@ const LoginOtpForm = ({ nationalCode, handelTransferLogin }) => {
                 bgcolor: "#0d47a1",
               },
             }}
+            disabled={isLoading}
           >
-            ورود
+            {isLoading ? "در حال ارسال..." : "ورود"}
           </Button>
 
-          <div
-            style={{
+          {isError && (
+            <Typography color="error" variant="body2" align="center">
+              {error?.message || "خطا در تأیید کد OTP"}
+            </Typography>
+          )}
+
+          <Box
+            sx={{
               display: "flex",
-              marginTop: "10px",
+              mt: 2,
               fontSize: "14px",
               fontWeight: "800",
+              justifyContent: "center",
             }}
           >
-            <Typography style={{ fontSize: "14px" }} marginRight={0.5}>
+            <Typography sx={{ fontSize: "14px", mr: 0.5 }}>
               حساب کاربری دارید؟
             </Typography>
             <Link
-              fullWidth
-              size="medium"
-              type="submit"
-              variant="contained"
-              style={{ color: "blue", textDecoration: "underLine" }}
-              onClick={handelTransferLogin}
+              onClick={handleTransferLogin}
+              style={{
+                color: "blue",
+                textDecoration: "underline",
+                cursor: "pointer",
+              }}
             >
               وارد شوید
             </Link>
-            <ToastContainer
-              position="top-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-            />
-          </div>
+          </Box>
         </Box>
       </Box>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </Grid>
   );
 };
 
 LoginOtpForm.propTypes = {
-  nationalCode: PropTypes.object.isRequired,
-  handelTransferLogin: PropTypes.func.isRequired,
+  nationalCode: PropTypes.string.isRequired,
+  captchaData: PropTypes.object, // می‌تواند null باشد
+  handleTransferLogin: PropTypes.func.isRequired,
 };
+
 export default LoginOtpForm;

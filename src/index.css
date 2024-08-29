@@ -19,7 +19,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 * {
-  scrollbar-width: thin;
+  scrollbar-width: medium;
   scrollbar-color: var(--secondary) var(--primary);
 }
 
@@ -39,7 +39,7 @@
   border: 7px solid var(--primary);
 }
 :root {
-  --primary: rgb(0, 38, 255) !important ; 
+  --primary: #400a6f !important ; 
   --secondary: rgb(253, 253, 253) !important;
 }
 

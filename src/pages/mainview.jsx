@@ -1,6 +1,6 @@
 // import { Helmet } from "react-helmet-async";
 import { Helmet } from "react-helmet";
-import Desk from "../layouts/desk";
+import Desk from "../components/desk/desk";
 
 // ----------------------------------------------------------------------
 
@@ -11,9 +11,7 @@ export default function MainView() {
         <title> پنل کاربری | ایساتیس پویا </title>
       </Helmet>
 
-      <Desk>
-        <h1>پنل کاربری</h1>
-      </Desk>
+      <Desk></Desk>
     </>
   );
 }
